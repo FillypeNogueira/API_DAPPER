@@ -17,9 +17,11 @@ namespace API_DAPPER.Repository
             _configuration = configuration;
             connectionString = _configuration.GetConnectionString("NpgsqlConnection");
         }
-        public Task<bool> AddProductAsync(ProductRequest request)
+        public async Task<bool> AddProductAsync(ProductRequest request)
         {
-            throw new NotImplementedException();
+            string sql = @"insert into Product (name, description, price, status, categoryid) values (@Name, @Description, @Price, @Status, @CategoryId);";
+            using(var con = new NpgsqlConnection(connectionString))
+            return await con.ExecuteAsync(sql, request) > 0;
         }
 
         public Task<bool> DeleteProcuctAsync(int id)
