@@ -24,14 +24,19 @@ namespace API_DAPPER.Repository
             return await con.ExecuteAsync(sql, request) > 0;
         }
 
-        public Task<bool> DeleteProcuctAsync(int id)
+        public async Task<bool> DeleteProcuctAsync(int id)
         {
-            throw new NotImplementedException();
+            string sql = @"delete from Product where id = @id;";
+
+            using(var con = new NpgsqlConnection(connectionString))
+            return await con.ExecuteAsync(sql, new {id = id}) > 0 ;
         }
 
-        public Task<ProductResponse> GetProductAsync(int Id)
+        public async Task<ProductResponse> GetProductAsync(int Id)
         {
-            throw new NotImplementedException();
+            string sql = @"select p.id, p.Name, p.Description, p.Price, p.Status, p.CategoryId from Product p join Category c on p.categoryid = c.id where p.id = @id;";
+            using(var con = new NpgsqlConnection(connectionString))
+            return await con.QueryFirstOrDefaultAsync<ProductResponse>(sql, new {id = Id});
         }
 
         public async Task<IEnumerable<ProductResponse>> GetProductsAsync()
@@ -43,9 +48,20 @@ namespace API_DAPPER.Repository
             return await con.QueryAsync<ProductResponse>(sql);
         }
 
-        public Task<bool> UpdateProductAsync(ProductRequest request, int id)
+        public async Task<bool> UpdateProductAsync(ProductRequest request, int id)
         {
-            throw new NotImplementedException();
+            string sql = @"update Product set name = @Name, price = @Price, description = @Description, status = @Status, categoryid = @CategoryId where id = @id";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("name", request.Name);
+            parameters.Add("price", request.Price);
+            parameters.Add("description", request.Description);
+            parameters.Add("status", request.Status);
+            parameters.Add("categoryid", request.CategoryId);
+            parameters.Add("Id", id);
+
+            using(var con = new NpgsqlConnection(connectionString))
+            return await con.ExecuteAsync(sql, parameters) > 0;
         }
     }
 }
