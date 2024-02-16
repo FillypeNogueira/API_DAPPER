@@ -1,34 +1,66 @@
 using API_DAPPER.Models.Requests;
 using API_DAPPER.Models.Responses;
 using API_DAPPER.Repository.Interface;
+using Dapper;
+using Npgsql;
 
 namespace API_DAPPER.Repository
 {
     public class CategoryRepository : ICategoryRepository
     {
-        public Task<bool> AddCategoryAsync(CategoryRequest request)
+        private readonly IConfiguration _configuration;
+
+        private readonly string connectionString;
+
+        public CategoryRepository(IConfiguration configuration)
         {
-            throw new NotImplementedException();
+            _configuration = configuration;
+            connectionString = configuration.GetConnectionString("NpgsqlConnection");
         }
 
-        public Task<bool> DeleteCategoryAsync(int Id)
+        public async Task<bool> AddCategoryAsync(CategoryRequest request)
         {
-            throw new NotImplementedException();
+            string sql = @"insert into Category(Name, Status) values(@Name, @Status)";
+
+            using(var con = new NpgsqlConnection(connectionString))
+            return await con.ExecuteAsync(sql, request) > 0;
         }
 
-        public Task<IEnumerable<CategoryResponse>> GetCategoriesAsync()
+        public async Task<bool> DeleteCategoryAsync(int id)
         {
-            throw new NotImplementedException();
+            string sql = @"delete from Category where id = @id;";
+
+            using(var con = new NpgsqlConnection(connectionString))
+            return await con.ExecuteAsync(sql, new {id = id}) > 0; 
         }
 
-        public Task<CategoryResponse> GetCategoryAsync(int Id)
+        public async Task<IEnumerable<CategoryResponse>> GetCategoriesAsync()
         {
-            throw new NotImplementedException();
+            string sql = @"select c.id, c.name, c.status from Category c join Product p on p.Id = c.Id;";
+
+            using(var con = new NpgsqlConnection(connectionString))
+            return await con.QueryAsync<CategoryResponse>(sql);
         }
 
-        public Task<bool> UpdateCategoryAsync(CategoryRequest request, int Id)
+        public async Task<CategoryResponse> GetCategoryAsync(int id)
         {
-            throw new NotImplementedException();
+            string sql = @"select c.name, c.status from Category c join Product p on p.Id = c.Id where c.Id = @id;";
+
+            using(var con = new NpgsqlConnection(connectionString))
+            return await con.QueryFirstOrDefaultAsync<CategoryResponse>(sql, new{id = id});
+        }
+
+        public async Task<bool> UpdateCategoryAsync(CategoryRequest request, int id)
+        {
+            string sql = @"update from Category set Name = @Name, Status = @Status where Id = @id;";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("Name", request.Name);
+            parameters.Add("Status", request.Status);
+            parameters.Add("Id", id);
+            
+            using(var con = new NpgsqlConnection(connectionString))
+            return await con.ExecuteAsync(sql, request) > 0;
         }
     }
 }

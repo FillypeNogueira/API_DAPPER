@@ -41,7 +41,7 @@ namespace API_DAPPER.Repository
 
         public async Task<IEnumerable<ProductResponse>> GetProductsAsync()
         {
-            string sql = @"SELECT P.Name, P.Description, P.Price, P.Status, C.Id
+            string sql = @"SELECT P.Id, P.Name, P.Description, P.Price, P.Status, C.Id
                            FROM Product P
                            JOIN Category C ON P.CategoryId = C.Id;";
             using(var con = new NpgsqlConnection(connectionString))
