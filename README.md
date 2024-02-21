@@ -22,11 +22,11 @@ A presente API tem como objetivo tornar possível a execução dos métodos HTTP
 
 ## Instalação
 
-As instrunções de uso são muito simples, basta executar os comandos para:
+As instrunções de uso são muito simples, caso seja necessário, basta executar os comandos para:
 
-* Criação de uma nova webapi com o dotnet 7.0: dotnet new webapi --framework net7.0
 * Adicione o pacote NuGet do PostgreSQL ao seu projeto: dotnet add package Npgsql
 * Adicione o pacote Nuget do Dapper ao seu projeto: dotnet add package Dapper
+* No appsettings.json preencha com cuidado as informações necessárias no NpgsqlConnection, para que haja a conexão com o banco de dados.
 
 ## Como Usar
 
