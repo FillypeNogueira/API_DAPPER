@@ -34,10 +34,10 @@ As instrunções de uso são muito simples, caso seja necessário, basta executa
 * Execute o comando: dotnet run
 * Abra o swagger no navegador e acesse as funcionalidades disponíveis.
 
-##Configurações de Banco
+## Configurações de Banco
 
-1° Abra seu SGBD ou acesse seu banco pelo terminal.
-2° Execute o script a seguir para criação das tabelas:
+* 1° Abra seu SGBD ou acesse seu banco pelo terminal.
+* 2° Execute o script a seguir para criação das tabelas:
 
 CREATE TABLE Category (
     Id SERIAL PRIMARY KEY,
@@ -55,7 +55,7 @@ CREATE TABLE Product (
     FOREIGN KEY (CategoryId) REFERENCES Category(Id)
 );
 
-3° Execute o script a seguir para criação dos registros da tabela Category:
+* 3° Execute o script a seguir para criação dos registros da tabela Category:
 
 INSERT INTO Category (Name, Status) VALUES ('Eletrônicos', true);
 INSERT INTO Category (Name, Status) VALUES ('Roupas', true);
@@ -63,7 +63,7 @@ INSERT INTO Category (Name, Status) VALUES ('Alimentos', true);
 INSERT INTO Category (Name, Status) VALUES ('Cosméticos', true);
 INSERT INTO Category (Name, Status) VALUES ('Livros', true);
 
-4° Execute o script a seguir para a criação dos registros da tabela Product:
+* 4° Execute o script a seguir para a criação dos registros da tabela Product:
 
 INSERT INTO Product (Name, Description, Price, Status, CategoryId) VALUES ('Smartphone', 'Smartphone de última geração', 999.99, true, 1);
 INSERT INTO Product (Name, Description, Price, Status, CategoryId) VALUES ('Notebook', 'Notebook ultrafino e potente', 1499.99, true, 1);
