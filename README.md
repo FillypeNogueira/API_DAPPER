@@ -8,7 +8,7 @@ Esta aplicação tem como objetivo possibilitar a execução dos métodos HTTP(G
 2. [Tecnologias Utilizadas](#tecnologias-utilizadas)
 3. [Instalação](#instalação)
 4. [Como Usar](#como-usar)
-5. [Configurações de Banco].(#configurações-de-Banco)
+5. [Configurações de Banco](#configurações-de-Banco)
 
 ## Sobre o Projeto
 
